@@ -1,10 +1,5 @@
 import random
 
-print('Welcome to the number guessing game')
-level = int(input('Select your level: \n 1 for Easy; 2 for Medium; 3 for Hard :'))
-
-guesses = 0
-
 
 def generate_random_number(stage):
 	value = 0
@@ -17,25 +12,47 @@ def generate_random_number(stage):
 	return value
 
 
-if level == 1:
-	guesses = 6
-	while guesses > 0:
-		guess_value = int(input('Guess the number between 1 and 10:'))
-		random_number = generate_random_number(1)
+def guess_number(trials, my_stage):
+	global random_number
+	maxi = 0
+	if my_stage == 1:
+		maxi = 10
+	elif my_stage == 2:
+		maxi = 20
+	elif my_stage == 3:
+		maxi = 50
+	while trials > 0:
+		guess_value = int(input(f'Guess the number between 1 and {maxi}:'))
+		random_number = generate_random_number(my_stage)
+		if guess_value > maxi:
+			print('You have entered a number above the limit')
 		if guess_value == random_number:
-			print('You got it right')
+			print('You got it right!')
 			exit()
-		guesses -= 1
-		print(f'You have {guesses} left')
-	print('Game Over!!!')
+		trials -= 1
+		print(f'You have {trials} left')
+	print('Game over!')
 	print(f'The answer was {random_number}')
 	exit()
-elif level == 2:
-	guesses = 4
-	random_number = generate_random_number(2)
-elif level == 3:
-	guesses = 3
-	random_number = generate_random_number(3)
+
+
+print('Welcome to the number guessing game')
+try:
+	level = int(input('Select your level: \n 1 for Easy; 2 for Medium; 3 for Hard :'))
+except ValueError:
+	print('There are 3 levels, easy, medium and hard')
+	exit()
 else:
-	print('You have entered an invalid input')
+	guesses = 0
+	if level == 1:
+		guesses = 6
+		guess_number(guesses, 1)
+	elif level == 2:
+		guesses = 4
+		guess_number(guesses, 2)
+	elif level == 3:
+		guesses = 3
+		guess_number(guesses, 3)
+	else:
+		print('You have entered an invalid input')
 	exit()
